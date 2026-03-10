@@ -1,0 +1,26 @@
+name: CI Pipeline
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: osv-rules-ci
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    strategy:
+      matrix:
+        ecosystem: [npm, pypi]
+    uses: ./.github/workflows/_osv_rulegen.yml
+    with:
+      ecosystem: ${{ matrix.ecosystem }}
+      rulesets_dir: rulesets
+
+  commit:
+    needs: generate
+    uses: ./.github/workflows/_commit.yml
+    with:
+      rulesets_dir: rulesets

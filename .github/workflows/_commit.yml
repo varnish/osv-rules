@@ -1,0 +1,30 @@
+name: Commit and push changes
+
+on:
+  workflow_call:
+    inputs:
+      rulesets_dir:
+        required: true
+        type: string
+        description: "Base directory containing generated rulesets"
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          merge-multiple: true
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add ${{ inputs.rulesets_dir }}/
+          git diff --staged --quiet || git commit -m "Update OSV rules ($(date -u +"%Y-%m-%d %H:%M UTC"))"
+          git push

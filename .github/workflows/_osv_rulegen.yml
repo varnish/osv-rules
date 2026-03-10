@@ -1,0 +1,45 @@
+name: Generate rulesets
+
+on:
+  workflow_call:
+    inputs:
+      ecosystem:
+        required: true
+        type: string
+        description: "The ecosystem for which to generate rulesets"
+      rulesets_dir:
+        required: true
+        type: string
+        description: "Base directory for generated rulesets"
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate ruleset for ${{ inputs.ecosystem }}
+        run: |
+          mkdir -p ${{ inputs.rulesets_dir }}/${{ inputs.ecosystem }}
+          docker run --rm varnish/osv-rulegen -ecosystem ${{ inputs.ecosystem }} > ${{ inputs.rulesets_dir }}/${{ inputs.ecosystem }}/all.yaml
+
+      - name: Validate ruleset
+        run: |
+          RULESET="${{ inputs.rulesets_dir }}/${{ inputs.ecosystem }}/all.yaml"
+
+          if [ ! -s "$RULESET" ]; then
+            echo "::error::Ruleset for ${{ inputs.ecosystem }} is empty."
+            exit 1
+          fi
+
+          MIN_LINES=20
+          LINE_COUNT=$(wc -l < "$RULESET")
+          if [ "$LINE_COUNT" -lt "$MIN_LINES" ]; then
+            echo "::error::Ruleset for ${{ inputs.ecosystem }} looks truncated: only $LINE_COUNT lines (expected at least $MIN_LINES)."
+            exit 1
+          fi
+          echo "Ruleset OK: $LINE_COUNT lines."
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.ecosystem }}-osv
+          path: ${{ inputs.rulesets_dir }}/${{ inputs.ecosystem }}/all.yaml
