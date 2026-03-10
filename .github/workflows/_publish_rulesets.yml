@@ -7,10 +7,6 @@ on:
         required: true
         type: string
         description: "Directory containing the generated rulesets"
-      tag_name:
-        required: true
-        type: string
-        description: "Release tag to publish to (e.g. latest)"
     secrets:
       app_id:
         required: true
@@ -45,8 +41,8 @@ jobs:
         env:
           GH_TOKEN: ${{ steps.token.outputs.token }}
         run: |
-          gh release delete ${{ inputs.tag_name }} --yes --cleanup-tag 2>/dev/null || true
-          gh release create ${{ inputs.tag_name }} osv-rules.zip \
-            --title "OSV Rules (${{ inputs.tag_name }})" \
+          TAG="$(date -u +'%Y%m%d-%H%M')"
+          gh release create "$TAG" osv-rules.zip \
+            --title "OSV Rules ($TAG)" \
             --notes "Auto-generated OSV rulesets. Updated $(date -u +'%Y-%m-%d %H:%M UTC')." \
             --latest

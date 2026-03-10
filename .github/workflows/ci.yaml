@@ -33,7 +33,6 @@ jobs:
     uses: ./.github/workflows/_publish_rulesets.yml
     with:
       rulesets_dir: rulesets
-      tag_name: latest
     secrets:
       app_id: ${{ secrets.APP_ID }}
       app_private_key: ${{ secrets.APP_PRIVATE_KEY }}
