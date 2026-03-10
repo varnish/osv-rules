@@ -24,6 +24,9 @@ jobs:
     uses: ./.github/workflows/_commit.yml
     with:
       rulesets_dir: rulesets
+    secrets:
+      app_id: ${{ secrets.APP_ID }}
+      app_private_key: ${{ secrets.APP_PRIVATE_KEY }}
 
   publish:
     needs: generate
@@ -31,3 +34,6 @@ jobs:
     with:
       rulesets_dir: rulesets
       tag_name: latest
+    secrets:
+      app_id: ${{ secrets.APP_ID }}
+      app_private_key: ${{ secrets.APP_PRIVATE_KEY }}

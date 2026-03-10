@@ -7,6 +7,11 @@ on:
         required: true
         type: string
         description: "Base directory containing generated rulesets"
+    secrets:
+      app_id:
+        required: true
+      app_private_key:
+        required: true
 
 jobs:
   commit:
@@ -14,7 +19,16 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Generate app token
+        id: token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.app_id }}
+          private-key: ${{ secrets.app_private_key }}
+
       - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.token.outputs.token }}
 
       - name: Download all artifacts
         uses: actions/download-artifact@v4

@@ -11,14 +11,26 @@ on:
         required: true
         type: string
         description: "Release tag to publish to (e.g. latest)"
+    secrets:
+      app_id:
+        required: true
+      app_private_key:
+        required: true
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
+      - name: Generate app token
+        id: token
+        uses: actions/create-github-app-token@v1
+        with:
+          app-id: ${{ secrets.app_id }}
+          private-key: ${{ secrets.app_private_key }}
+
       - uses: actions/checkout@v4
+        with:
+          token: ${{ steps.token.outputs.token }}
 
       - name: Download all artifacts
         uses: actions/download-artifact@v4
@@ -31,7 +43,7 @@ jobs:
 
       - name: Publish release
         env:
-          GH_TOKEN: ${{ github.token }}
+          GH_TOKEN: ${{ steps.token.outputs.token }}
         run: |
           gh release delete ${{ inputs.tag_name }} --yes --cleanup-tag 2>/dev/null || true
           gh release create ${{ inputs.tag_name }} osv-rules.zip \
