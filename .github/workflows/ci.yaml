@@ -29,7 +29,7 @@ jobs:
       app_private_key: ${{ secrets.APP_PRIVATE_KEY }}
 
   publish:
-    needs: generate
+    needs: commit
     uses: ./.github/workflows/_publish_rulesets.yml
     with:
       rulesets_dir: rulesets
