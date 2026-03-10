@@ -42,4 +42,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ inputs.ecosystem }}-osv
-          path: ${{ inputs.rulesets_dir }}/${{ inputs.ecosystem }}/all.yaml
+          path: ${{ inputs.rulesets_dir }}/

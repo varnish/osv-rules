@@ -19,6 +19,7 @@ jobs:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
+          path: ${{ inputs.rulesets_dir }}
           merge-multiple: true
 
       - name: Commit and push changes
