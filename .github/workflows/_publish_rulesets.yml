@@ -1,0 +1,40 @@
+name: Publish rulesets
+
+on:
+  workflow_call:
+    inputs:
+      rulesets_dir:
+        required: true
+        type: string
+        description: "Directory containing the generated rulesets"
+      tag_name:
+        required: true
+        type: string
+        description: "Release tag to publish to (e.g. latest)"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ inputs.rulesets_dir }}
+          merge-multiple: true
+
+      - name: Create zip
+        run: zip -r osv-rules.zip ${{ inputs.rulesets_dir }}/
+
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release delete ${{ inputs.tag_name }} --yes --cleanup-tag 2>/dev/null || true
+          gh release create ${{ inputs.tag_name }} osv-rules.zip \
+            --title "OSV Rules (${{ inputs.tag_name }})" \
+            --notes "Auto-generated OSV rulesets. Updated $(date -u +'%Y-%m-%d %H:%M UTC')." \
+            --latest
