@@ -10,6 +10,7 @@ Rulesets are regenerated automatically every hour using [osv-rulegen](https://hu
 |-----------|------|
 | npm       | [rulesets/npm/all.yaml](rulesets/npm/all.yaml) |
 | pypi      | [rulesets/pypi/all.yaml](rulesets/pypi/all.yaml) |
+| nuget     | [rulesets/nuget/all.yaml](rulesets/nuget/all.yaml) |
 
 ## Usage
 
@@ -29,6 +30,12 @@ firewall:
         url: https://github.com/varnish/osv-rules
         ref: main
         sub_path: rulesets/npm/all.yaml
+        interval: 1h
+    - git:
+        name: nuget-osv-rules
+        url: https://github.com/varnish/osv-rules
+        ref: main
+        sub_path: rulesets/nuget/all.yaml
         interval: 1h
 ```
 
