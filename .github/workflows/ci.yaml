@@ -13,7 +13,7 @@ jobs:
   generate:
     strategy:
       matrix:
-        ecosystem: [npm, pypi]
+        ecosystem: [npm, pypi, nuget]
     uses: ./.github/workflows/_osv_rulegen.yml
     with:
       ecosystem: ${{ matrix.ecosystem }}
