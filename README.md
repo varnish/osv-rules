@@ -3,7 +3,7 @@
 [![CI Pipeline](https://github.com/varnish/osv-rules/actions/workflows/ci.yaml/badge.svg)](https://github.com/varnish/osv-rules/actions/workflows/ci.yaml)
 [![Last updated](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Flast-updated.json)](https://github.com/varnish/osv-rules/commits/main)
 
-This repository contains auto-generated Varnish Artifact Firewall rulesets derived from [OSV](https://osv.dev) vulnerability data.
+This repository contains auto-generated Varnish Artifact Firewall rulesets derived from [<img src="https://raw.githubusercontent.com/google/osv.dev/master/docs/images/osv_logo_light-full.svg" alt="OSV" height="20">](https://osv.dev) vulnerability data.
 
 Rulesets are regenerated automatically every hour using [osv-rulegen](https://hub.docker.com/r/varnish/osv-rulegen) and committed directly to this repository.
 
