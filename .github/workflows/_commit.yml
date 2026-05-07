@@ -21,7 +21,7 @@ jobs:
     steps:
       - name: Generate app token
         id: token
-        uses: actions/create-github-app-token@v1
+        uses: actions/create-github-app-token@v3
         with:
           app-id: ${{ secrets.app_id }}
           private-key: ${{ secrets.app_private_key }}
