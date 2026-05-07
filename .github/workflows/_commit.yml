@@ -36,10 +36,26 @@ jobs:
           path: ${{ inputs.rulesets_dir }}
           merge-multiple: true
 
+      - name: Refresh badges
+        run: |
+          mkdir -p .github/badges
+          for dir in ${{ inputs.rulesets_dir }}/*/; do
+            ecosystem=$(basename "$dir")
+            count=$(grep -c '^  - id:' "$dir/all.yaml" || echo 0)
+            printf '{"schemaVersion":1,"label":"rules","message":"%s","color":"blue"}\n' \
+              "$count" > ".github/badges/${ecosystem}.json"
+          done
+          printf '{"schemaVersion":1,"label":"last updated","message":"%s","color":"green"}\n' \
+            "$(date -u +"%Y-%m-%d %H:%M UTC")" > .github/badges/last-updated.json
+
       - name: Commit and push changes
+        # We intentionally commit every run, even when rulesets are unchanged.
+        # The "nothing changed" commit confirms the pipeline ran and OSV had
+        # nothing new for us. The last-updated badge always changes, so the
+        # diff check below is just a safety net.
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add ${{ inputs.rulesets_dir }}/
+          git add ${{ inputs.rulesets_dir }}/ .github/badges/
           git diff --staged --quiet || git commit -m "Update OSV rules ($(date -u +"%Y-%m-%d %H:%M UTC"))"
           git push
