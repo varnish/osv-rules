@@ -1,5 +1,7 @@
 # OSV Rules for Varnish Artifact Firewall
 
+[![CI Pipeline](https://github.com/varnish/osv-rules/actions/workflows/ci.yaml/badge.svg)](https://github.com/varnish/osv-rules/actions/workflows/ci.yaml)
+
 This repository contains auto-generated Varnish Artifact Firewall rulesets derived from [OSV](https://osv.dev) vulnerability data.
 
 Rulesets are regenerated automatically every hour using [osv-rulegen](https://hub.docker.com/r/varnish/osv-rulegen) and committed directly to this repository.
