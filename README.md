@@ -1,6 +1,7 @@
 # OSV Rules for Varnish Artifact Firewall
 
 [![CI Pipeline](https://github.com/varnish/osv-rules/actions/workflows/ci.yaml/badge.svg)](https://github.com/varnish/osv-rules/actions/workflows/ci.yaml)
+[![Last updated](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Flast-updated.json)](https://github.com/varnish/osv-rules/commits/main)
 
 This repository contains auto-generated Varnish Artifact Firewall rulesets derived from [OSV](https://osv.dev) vulnerability data.
 
@@ -8,11 +9,11 @@ Rulesets are regenerated automatically every hour using [osv-rulegen](https://hu
 
 ## Rulesets
 
-| Ecosystem | File |
-|-----------|------|
-| npm       | [rulesets/npm/all.yaml](rulesets/npm/all.yaml) |
-| pypi      | [rulesets/pypi/all.yaml](rulesets/pypi/all.yaml) |
-| nuget     | [rulesets/nuget/all.yaml](rulesets/nuget/all.yaml) |
+| Ecosystem | File | Rules |
+|-----------|------|-------|
+| npm       | [rulesets/npm/all.yaml](rulesets/npm/all.yaml)     | ![npm rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fnpm.json) |
+| pypi      | [rulesets/pypi/all.yaml](rulesets/pypi/all.yaml)   | ![pypi rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fpypi.json) |
+| nuget     | [rulesets/nuget/all.yaml](rulesets/nuget/all.yaml) | ![nuget rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fnuget.json) |
 
 ## Usage
 
