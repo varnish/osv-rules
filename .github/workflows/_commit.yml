@@ -26,7 +26,7 @@ jobs:
           app-id: ${{ secrets.app_id }}
           private-key: ${{ secrets.app_private_key }}
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           token: ${{ steps.token.outputs.token }}
 
