@@ -21,6 +21,8 @@ jobs:
 
   commit:
     needs: generate
+    permissions:
+      contents: write
     uses: ./.github/workflows/_commit.yml
     with:
       rulesets_dir: rulesets
