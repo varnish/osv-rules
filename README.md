@@ -14,6 +14,7 @@ Rulesets are regenerated automatically every hour using [osv-rulegen](https://hu
 | npm       | [rulesets/npm/all.yaml](rulesets/npm/all.yaml)     | ![npm rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fnpm.json) |
 | pypi      | [rulesets/pypi/all.yaml](rulesets/pypi/all.yaml)   | ![pypi rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fpypi.json) |
 | nuget     | [rulesets/nuget/all.yaml](rulesets/nuget/all.yaml) | ![nuget rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fnuget.json) |
+| maven     | [rulesets/maven/all.yaml](rulesets/maven/all.yaml) | ![maven rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fmaven.json) |
 
 ## Usage
 
@@ -39,6 +40,12 @@ firewall:
         url: https://github.com/varnish/osv-rules
         ref: main
         sub_path: rulesets/nuget/all.yaml
+        interval: 1h
+    - git:
+        name: maven-osv-rules
+        url: https://github.com/varnish/osv-rules
+        ref: main
+        sub_path: rulesets/maven/all.yaml
         interval: 1h
 ```
 
