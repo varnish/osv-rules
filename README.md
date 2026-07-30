@@ -16,6 +16,7 @@ Rulesets are regenerated automatically every hour using [osv-rulegen](https://hu
 | nuget     | [rulesets/nuget/all.yaml](rulesets/nuget/all.yaml) | ![nuget rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fnuget.json) |
 | maven     | [rulesets/maven/all.yaml](rulesets/maven/all.yaml) | ![maven rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fmaven.json) |
 | hex       | [rulesets/hex/all.yaml](rulesets/hex/all.yaml)     | ![hex rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fhex.json) |
+| go        | [rulesets/go/all.yaml](rulesets/go/all.yaml)       | ![go rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fgo.json) |
 
 ## Usage
 
@@ -53,6 +54,12 @@ firewall:
         url: https://github.com/varnish/osv-rules
         ref: main
         sub_path: rulesets/hex/all.yaml
+        interval: 1h
+    - git:
+        name: go-osv-rules
+        url: https://github.com/varnish/osv-rules
+        ref: main
+        sub_path: rulesets/go/all.yaml
         interval: 1h
 ```
 
