@@ -119,4 +119,24 @@ Rules are assigned a numeric severity score (0–10) when one can be derived:
 | CVSS v3 vector | Base score from the vector |
 | Qualitative label | `CRITICAL`→9.5, `HIGH`→8.0, `MODERATE`/`MEDIUM`→5.5, `LOW`→2.0, `NONE`→0.0 |
 
-When no severity information is available, `deny` is used.
+Almost every rule gets a score this way. The few that cannot be scored carry
+the `-action` value instead, `deny` unless you generated the ruleset yourself
+with `-action hide`.
+
+## What gets blocked
+
+The firewall turns each rule's severity into an action when it loads the
+ruleset, against two thresholds from its own configuration:
+
+| Severity | Action | Effect |
+|----------|--------|--------|
+| At or above `severity_deny_threshold` (default 9) | `deny` | Returns a 403. |
+| At or below `severity_allow_threshold` (default 4) | `allow` | Passes the request through. |
+| Between the two | `hide` | Removes the version from "latest" consideration. |
+
+The example rule above scores 4.4, so on the defaults that urllib3 range is
+hidden rather than refused. Move the thresholds to suit how much you want these
+rulesets to block.
+
+To measure that before enforcing it, run with `mode: report`, which downgrades
+every action to `allow` and records what it would have done in the audit log.
