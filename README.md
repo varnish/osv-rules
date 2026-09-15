@@ -41,6 +41,13 @@ rules:
 A rule matches a package by purl and an affected version range, and carries the
 severity the firewall resolves into an action. It names no action of its own.
 
+Both notations come from the Package-URL project. A
+[purl](https://github.com/package-url/purl-spec) identifies a package across
+ecosystems, so `pkg:pypi/urllib3` is urllib3 on PyPI. A
+[vers](https://github.com/package-url/vers-spec) range is a list of version
+constraints separated by `|`, so `vers:pypi/<1.26.19|>=2.0.0|<2.2.2` covers
+everything below 1.26.19, and 2.0.0 up to but not including 2.2.2.
+
 ## Usage
 
 Add this repository as a `git` ruleset in the firewall configuration.
