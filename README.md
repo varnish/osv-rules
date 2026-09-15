@@ -20,48 +20,36 @@ Rulesets are regenerated automatically every hour using [osv-rulegen](https://hu
 
 ## Usage
 
-Add one or more `git` rulesets to the firewall configuration:
+Add this repository as a `git` ruleset in the firewall configuration.
 
 ```yaml
 firewall:
   rulesets:
     - git:
-        name: pypi-osv-rules
+        name: osv-rules
         url: https://github.com/varnish/osv-rules
         ref: main
-        sub_path: rulesets/pypi/all.yaml
-        interval: 1h
-    - git:
-        name: npm-osv-rules
-        url: https://github.com/varnish/osv-rules
-        ref: main
-        sub_path: rulesets/npm/all.yaml
-        interval: 1h
-    - git:
-        name: nuget-osv-rules
-        url: https://github.com/varnish/osv-rules
-        ref: main
-        sub_path: rulesets/nuget/all.yaml
-        interval: 1h
-    - git:
-        name: maven-osv-rules
-        url: https://github.com/varnish/osv-rules
-        ref: main
-        sub_path: rulesets/maven/all.yaml
-        interval: 1h
-    - git:
-        name: hex-osv-rules
-        url: https://github.com/varnish/osv-rules
-        ref: main
-        sub_path: rulesets/hex/all.yaml
-        interval: 1h
-    - git:
-        name: go-osv-rules
-        url: https://github.com/varnish/osv-rules
-        ref: main
-        sub_path: rulesets/go/all.yaml
+        sub_path: rulesets
         interval: 1h
 ```
+
+To take only some ecosystems, name them with `sub_paths`:
+
+```yaml
+firewall:
+  rulesets:
+    - git:
+        name: osv-rules
+        url: https://github.com/varnish/osv-rules
+        ref: main
+        sub_paths:
+          - rulesets/npm/all.yaml
+          - rulesets/pypi/all.yaml
+        interval: 1h
+```
+
+Directory entries and `sub_paths` need firewall 0.5.0 or newer. Earlier
+versions take one ruleset file per entry, through `sub_path`.
 
 ## Generate your own rules
 
