@@ -90,7 +90,9 @@ docker run --rm varnish/osv-rulegen -ecosystem pypi > pypi-osv.yaml
 | `-action`    | `deny`  | Rule action when no severity score can be determined (`deny` or `hide`) |
 | `-input`     |         | Path to a local `.zip` to convert instead of downloading |
 | `-output`    |         | Download the zip and save it to this path, then exit |
+| `-download-url` |      | Fetch the zip from this URL instead of the OSV bucket |
 | `-verbose`   | `false` | Log each deduplicated and ecosystem-skipped record |
+| `-version`   | `false` | Print the version and exit |
 
 ### Examples
 
