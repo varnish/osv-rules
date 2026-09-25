@@ -11,6 +11,11 @@ on:
         required: true
         type: string
         description: "Base directory for generated rulesets"
+      min_lines:
+        required: false
+        type: number
+        default: 20
+        description: "Minimum line count below which the ruleset is treated as truncated"
 
 jobs:
   generate:
@@ -30,7 +35,7 @@ jobs:
             exit 1
           fi
 
-          MIN_LINES=20
+          MIN_LINES=${{ inputs.min_lines }}
           LINE_COUNT=$(wc -l < "$RULESET")
           if [ "$LINE_COUNT" -lt "$MIN_LINES" ]; then
             echo "::error::Ruleset for ${{ inputs.ecosystem }} looks truncated: only $LINE_COUNT lines (expected at least $MIN_LINES)."
