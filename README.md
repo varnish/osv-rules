@@ -17,6 +17,7 @@ Rulesets are regenerated automatically every hour using [osv-rulegen](https://hu
 | maven     | [rulesets/maven/all.yaml](rulesets/maven/all.yaml) | ![maven rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fmaven.json) |
 | hex       | [rulesets/hex/all.yaml](rulesets/hex/all.yaml)     | ![hex rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fhex.json) |
 | go        | [rulesets/go/all.yaml](rulesets/go/all.yaml)       | ![go rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fgo.json) |
+| vscode    | [rulesets/vscode/all.yaml](rulesets/vscode/all.yaml) | ![vscode rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fvscode.json) |
 
 The files run to hundreds of thousands of rules, so here is one taken from
 `rulesets/pypi/all.yaml`, under the ruleset header it sits in:
