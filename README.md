@@ -6,6 +6,9 @@
 This repository contains auto-generated Varnish Artifact Firewall rulesets derived from [OSV.dev](https://osv.dev) vulnerability data.
 
 Rulesets are regenerated automatically every hour using [osv-rulegen](https://hub.docker.com/r/varnish/osv-rulegen) and committed directly to this repository.
+Each ruleset is checked with the Artifact Firewall's `-validate-rulesets`
+before it is committed, and a run that produces one the firewall would refuse
+commits nothing.
 
 ## Rulesets
 

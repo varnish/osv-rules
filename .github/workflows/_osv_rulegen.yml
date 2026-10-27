@@ -38,6 +38,15 @@ jobs:
           fi
           echo "Ruleset OK: $LINE_COUNT lines."
 
+      - name: Check ruleset with the firewall
+        # Failing here stops the commit job, so firewalls polling main never
+        # fetch a ruleset they would refuse to load.
+        run: |
+          docker run --rm \
+            -v "$PWD/${{ inputs.rulesets_dir }}/${{ inputs.ecosystem }}:/rulesets:ro" \
+            varnish/artifact-firewall:latest \
+            varnish-artifact-firewall -validate-rulesets /rulesets/all.yaml
+
       - name: Upload artifact
         uses: actions/upload-artifact@v7
         with:
