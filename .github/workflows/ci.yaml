@@ -20,10 +20,17 @@ jobs:
           - npm
           - nuget
           - pypi
+          - vscode
+        include:
+          # VSCode has only a handful of OSV rules, so require just the
+          # header plus one rule.
+          - ecosystem: vscode
+            min_lines: 10
     uses: ./.github/workflows/_osv_rulegen.yml
     with:
       ecosystem: ${{ matrix.ecosystem }}
       rulesets_dir: rulesets
+      min_lines: ${{ matrix.min_lines || 20 }}
 
   commit:
     needs: generate
