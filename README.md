@@ -19,6 +19,20 @@ Rulesets are regenerated automatically every hour using [osv-rulegen](https://hu
 | go        | [rulesets/go/all.yaml](rulesets/go/all.yaml)       | ![go rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fgo.json) |
 | vscode    | [rulesets/vscode/all.yaml](rulesets/vscode/all.yaml) | ![vscode rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fvscode.json) |
 
+Each RPM distribution has its own ruleset, under `rpm/` so that the
+`rulesets` directory does not load them (see [RPM](#rpm)):
+
+| Distribution | File | Rules |
+|--------------|------|-------|
+| AlmaLinux    | [rpm/almalinux/all.yaml](rpm/almalinux/all.yaml)     | ![almalinux rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Falmalinux.json) |
+| Azure Linux  | [rpm/azure-linux/all.yaml](rpm/azure-linux/all.yaml) | ![azure-linux rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fazure-linux.json) |
+| Mageia       | [rpm/mageia/all.yaml](rpm/mageia/all.yaml)           | ![mageia rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fmageia.json) |
+| openEuler    | [rpm/openeuler/all.yaml](rpm/openeuler/all.yaml)     | ![openeuler rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fopeneuler.json) |
+| openSUSE     | [rpm/opensuse/all.yaml](rpm/opensuse/all.yaml)       | ![opensuse rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fopensuse.json) |
+| Red Hat      | [rpm/red-hat/all.yaml](rpm/red-hat/all.yaml)         | ![red-hat rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fred-hat.json) |
+| Rocky Linux  | [rpm/rocky-linux/all.yaml](rpm/rocky-linux/all.yaml) | ![rocky-linux rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Frocky-linux.json) |
+| SUSE         | [rpm/suse/all.yaml](rpm/suse/all.yaml)               | ![suse rules](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fvarnish%2Fosv-rules%2Fmain%2F.github%2Fbadges%2Fsuse.json) |
+
 The files run to hundreds of thousands of rules, so here is one taken from
 `rulesets/pypi/all.yaml`, under the ruleset header it sits in:
 
@@ -82,6 +96,32 @@ firewall:
 Directory entries and `sub_paths` need firewall 0.5.0 or newer. Earlier
 versions take one ruleset file per entry, through `sub_path`.
 
+### RPM
+
+An RPM rule names a package without its distribution, as `pkg:rpm/curl`, so
+the firewall applies each RPM ruleset it loads to every RPM registry it
+proxies. SUSE's curl rule `vers:rpm/<8.22.0-150700.7.33.1` would deny every
+curl build on a Rocky Linux mirror. Take only the ruleset for the distribution
+that your registry mirrors:
+
+```yaml
+firewall:
+  rulesets:
+    - git:
+        name: osv-rules
+        url: https://github.com/varnish/osv-rules
+        ref: main
+        sub_paths:
+          - rulesets/npm/all.yaml
+          - rpm/rocky-linux/all.yaml
+        interval: 1h
+```
+
+A ruleset also covers every release of its distribution, so a fix published
+for a newer release matches the builds of an older one. On an AlmaLinux 8
+mirror, the AlmaLinux 9 rule `vers:rpm/<3.0.1-41.el9_0` matches every openssl
+1.1.1 build, the fixed ones included.
+
 ## Generate your own rules
 
 The rulesets in this repo are produced by [osv-rulegen](https://hub.docker.com/r/varnish/osv-rulegen). You can run it yourself to generate rules into your own repo, tweak the default action, or work from a local OSV dump.
@@ -129,9 +169,12 @@ Rules are assigned a numeric severity score (0–10) when one can be derived:
 | CVSS v3 vector | Base score from the vector |
 | Qualitative label | `CRITICAL`→9.5, `HIGH`→8.0, `MODERATE`/`MEDIUM`→5.5, `LOW`→2.0, `NONE`→0.0 |
 
-Almost every rule gets a score this way. The few that cannot be scored carry
-the `-action` value instead, `deny` unless you generated the ruleset yourself
-with `-action hide`.
+Almost every rule in the language rulesets and in openEuler's gets a score this
+way. A rule that cannot be scored carries the `-action` value instead, `deny`
+unless you generated the ruleset yourself with `-action hide`. AlmaLinux,
+Mageia, openSUSE and SUSE publish no severity at all, so every rule in their
+rulesets here denies, and Azure Linux, Red Hat and Rocky Linux leave part of
+their advisories unscored.
 
 ## What gets blocked
 

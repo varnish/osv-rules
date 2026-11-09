@@ -32,13 +32,30 @@ jobs:
       rulesets_dir: rulesets
       min_lines: ${{ matrix.min_lines || 20 }}
 
+  generate-rpm:
+    strategy:
+      matrix:
+        distribution:
+          - almalinux
+          - azure-linux
+          - mageia
+          - openeuler
+          - opensuse
+          - red-hat
+          - rocky-linux
+          - suse
+    uses: ./.github/workflows/_osv_rulegen.yml
+    with:
+      ecosystem: ${{ matrix.distribution }}
+      rulesets_dir: rpm
+
   commit:
-    needs: generate
+    needs: [generate, generate-rpm]
     permissions:
       contents: write
     uses: ./.github/workflows/_commit.yml
     with:
-      rulesets_dirs: rulesets
+      rulesets_dirs: rulesets rpm
     secrets:
       app_id: ${{ secrets.APP_ID }}
       app_private_key: ${{ secrets.APP_PRIVATE_KEY }}
