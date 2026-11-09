@@ -38,7 +38,7 @@ jobs:
       contents: write
     uses: ./.github/workflows/_commit.yml
     with:
-      rulesets_dir: rulesets
+      rulesets_dirs: rulesets
     secrets:
       app_id: ${{ secrets.APP_ID }}
       app_private_key: ${{ secrets.APP_PRIVATE_KEY }}

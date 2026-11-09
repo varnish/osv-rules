@@ -3,10 +3,10 @@ name: Commit and push changes
 on:
   workflow_call:
     inputs:
-      rulesets_dir:
+      rulesets_dirs:
         required: true
         type: string
-        description: "Base directory containing generated rulesets"
+        description: "Space-separated base directories containing generated rulesets"
     secrets:
       app_id:
         required: true
@@ -33,17 +33,18 @@ jobs:
       - name: Download all artifacts
         uses: actions/download-artifact@v8
         with:
-          path: ${{ inputs.rulesets_dir }}
           merge-multiple: true
 
       - name: Refresh badges
         run: |
           mkdir -p .github/badges
-          for dir in ${{ inputs.rulesets_dir }}/*/; do
-            ecosystem=$(basename "$dir")
-            count=$(grep -c '^  - id:' "$dir/all.yaml" || echo 0)
-            printf '{"schemaVersion":1,"label":"rules","message":"%s","color":"blue"}\n' \
-              "$count" > ".github/badges/${ecosystem}.json"
+          for rulesets_dir in ${{ inputs.rulesets_dirs }}; do
+            for dir in "$rulesets_dir"/*/; do
+              ecosystem=$(basename "$dir")
+              count=$(grep -c '^  - id:' "$dir/all.yaml" || echo 0)
+              printf '{"schemaVersion":1,"label":"rules","message":"%s","color":"blue"}\n' \
+                "$count" > ".github/badges/${ecosystem}.json"
+            done
           done
           printf '{"schemaVersion":1,"label":"last updated","message":"%s","color":"green"}\n' \
             "$(date -u +"%Y-%m-%d %H:%M UTC")" > .github/badges/last-updated.json
@@ -56,6 +57,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add ${{ inputs.rulesets_dir }}/ .github/badges/
+          git add ${{ inputs.rulesets_dirs }} .github/badges/
           git diff --staged --quiet || git commit -m "Update OSV rules ($(date -u +"%Y-%m-%d %H:%M UTC"))"
           git push

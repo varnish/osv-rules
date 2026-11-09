@@ -23,12 +23,12 @@ jobs:
     steps:
       - name: Generate ruleset for ${{ inputs.ecosystem }}
         run: |
-          mkdir -p ${{ inputs.rulesets_dir }}/${{ inputs.ecosystem }}
-          docker run --rm varnish/osv-rulegen -ecosystem ${{ inputs.ecosystem }} > ${{ inputs.rulesets_dir }}/${{ inputs.ecosystem }}/all.yaml
+          mkdir -p out/${{ inputs.rulesets_dir }}/${{ inputs.ecosystem }}
+          docker run --rm varnish/osv-rulegen -ecosystem ${{ inputs.ecosystem }} > out/${{ inputs.rulesets_dir }}/${{ inputs.ecosystem }}/all.yaml
 
       - name: Validate ruleset
         run: |
-          RULESET="${{ inputs.rulesets_dir }}/${{ inputs.ecosystem }}/all.yaml"
+          RULESET="out/${{ inputs.rulesets_dir }}/${{ inputs.ecosystem }}/all.yaml"
 
           if [ ! -s "$RULESET" ]; then
             echo "::error::Ruleset for ${{ inputs.ecosystem }} is empty."
@@ -47,4 +47,6 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: ${{ inputs.ecosystem }}-osv
-          path: ${{ inputs.rulesets_dir }}/
+          # Paths in the artifact start with rulesets_dir, so the commit job
+          # downloads every artifact into the repository root.
+          path: out/
